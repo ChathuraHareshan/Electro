@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electro · cyber dashboard</title>
+    <!-- Font Awesome Icons (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+<div class="dashboard-container">
+    <!-- SIDEBAR (fixed, with logo + nav) -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <i class="fas fa-bolt logo-icon"></i>
+            <span class="logo-text">ELECTRO</span>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active" data-page="overview"><i class="fas fa-chart-pie"></i> <span>Overview</span></li>
+                <li data-page="products"><i class="fas fa-box"></i> <span>Products</span></li>
+                <li data-page="orders"><i class="fas fa-shopping-cart"></i> <span>Orders</span></li>
+                <li data-page="customers"><i class="fas fa-users"></i> <span>Customers</span></li>
+                <li data-page="analytics"><i class="fas fa-chart-line"></i> <span>Analytics</span></li>
+                <li data-page="settings"><i class="fas fa-cog"></i> <span>Settings</span></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT (dynamic pages injected by JS) -->
+    <main class="main-content" id="main-content">
+        <!-- dynamic content loads here -->
+    </main>
+</div>
+
+<!-- page templates (hidden, used by JS) -->
+<template id="page-overview"><!-- injected via js --></template>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>

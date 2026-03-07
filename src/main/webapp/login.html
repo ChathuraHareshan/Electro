@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electro · futuristic login</title>
+    <!-- external resources -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+    <!-- separate futuristic red/black theme CSS (linked externally) -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<!-- brand panel: logo + Electro name (red/black futuristic) -->
+<div class="brand-header">
+    <div class="brand-logo">
+        <!-- you can replace src with your own logo file -->
+        <img src="assets/img/fav.png" alt="Electro logo">
+    </div>
+    <div class="brand-name">Electro</div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <!-- toggle labels -->
+                    <h6 class="mb-0 pb-3"><span class="glow-text">Log In</span><span class="glow-text">Sign Up</span></h6>
+                    <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                    <label for="reg-log" class="toggle-neon"></label>
+
+                    <!-- 3D flip card (futuristic reinterpretation) -->
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <!-- FRONT: LOGIN -->
+                            <div class="card-front">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3" style="color: #ff4d4d; text-shadow: 0 0 8px #ff0000aa;">access</h4>
+                                        <div class="form-group">
+                                            <input type="email" inputmode="email" class="form-style" placeholder="Email" id="logEmail" autocomplete="off" required>
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="password" class="form-style" placeholder="Password" id="logPassword" autocomplete="off" required>
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <button type="button" class="btn mt-4" onclick="login();">enter</button>
+                                        <p class="mb-0 mt-4 text-center"><a href="#" class="link">Forgot Password?</a></p>
+                                    </div>
+                                    <br>
+                                    <small class="footnote">© 2024 Electro. All Rights Reserved</small>
+                                </div>
+                            </div>
+
+                            <!-- BACK: SIGNUP (with extra fields) -->
+                            <div class="card-back">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3" style="color: #ff4d4d; text-shadow: 0 0 8px #ff0000aa;">join our community</h4>
+                                        <div class="form-group">
+                                            <input type="text" class="form-style" placeholder="First name" id="fname" autocomplete="off">
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-style" placeholder="Last name" id="lname" autocomplete="off">
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <input type="email" inputmode="email" class="form-style" placeholder="Email" id="regEmail" autocomplete="off">
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>
+
+
+
+                                        <div class="form-group mt-2">
+                                            <input type="password" class="form-style" placeholder="Password" id="regPassword" autocomplete="off">
+                                            <i class="input-icon uil uil-key-skeleton"></i>
+                                        </div>
+
+                                        <button class="btn mt-4" onclick="register();">join now</button>
+                                    </div>
+                                    <small class="footnote">© 2024 Electro. All Rights Reserved</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="assets/js/login.js"></script>
+<script src="assets/js/register.js"></script>
+
+
+</body>
+</html>
