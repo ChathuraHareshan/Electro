@@ -2,6 +2,7 @@ package com.electro;
 
 
 import com.electro.config.AppConfig;
+import com.electro.listener.ContextPathListener;
 import com.electro.util.HibernateUtil;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
@@ -34,7 +35,7 @@ public class Main {
             Tomcat.addServlet(context, "JerseyServlet", new ServletContainer(new AppConfig()));
             context.addServletMappingDecoded("/api/*", "JerseyServlet");
 
-//            context.addApplicationListener(ContextPathListener.class.getName());
+            context.addApplicationListener(ContextPathListener.class.getName());
 
             tomcat.start();
             System.out.println("App URL: http://localhost:" + SERVER_PORT + CONTEXT_PATH);

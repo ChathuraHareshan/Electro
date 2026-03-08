@@ -9,6 +9,9 @@ import com.electro.util.AppUtil;
 import com.electro.util.HibernateUtil;
 import com.electro.validation.Validator;
 import com.google.gson.JsonObject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import jakarta.ws.rs.core.Context;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -97,6 +100,118 @@ public class UserService {
         return AppUtil.GSON.toJson(responseObject);
     }
 
+
+
+
+    public String userLogin(UserDTO userDTO, @Context HttpServletRequest request) {
+        JsonObject responseObject = new JsonObject();
+        boolean status = false;
+        String message = "";
+
+        ///  login handling code | user authentication part-start
+        if (userDTO.getEmail() == null) {
+            message = "Email is required!";
+        } else if (userDTO.getEmail().isBlank()) {
+            message = "Email address can not be empty!";
+        } else if (!userDTO.getEmail().matches(Validator.EMAIL_VALIDATION)) {
+            message = "Please provide valid email address!";
+        } else if (userDTO.getPassword() == null) {
+            message = "Password is required!";
+        } else if (userDTO.getPassword().isBlank()) {
+            message = "Password can not be empty!";
+        } else if (!userDTO.getPassword().matches(Validator.PASSWORD_VALIDATION)) {
+            message = "Please provide valid password. \n " +
+                    "The password must be at least 8 characters long and include at least one uppercase letter, " +
+                    "one lowercase letter, one digit, and one special character";
+        } else {
+            Session hibernateSession = HibernateUtil.getSessionFactory().openSession();
+            User singleUser = hibernateSession.createNamedQuery("User.getByEmail", User.class)
+                    .setParameter("email", userDTO.getEmail())
+                    .getSingleResultOrNull();
+            if (singleUser == null) { // not found
+                message = "Account not found. Please register first!";
+            } else {
+                if (!singleUser.getPassword().equals(userDTO.getPassword())) {
+                    message = "Something went wrong. Please check your login credentials!";
+                } else {
+                    Status verifiedStatus = hibernateSession.createNamedQuery("Status.findByValue", Status.class)
+                            .setParameter("value", String.valueOf(Status.Type.VERIFIED))
+                            .getSingleResult();
+                    if (!singleUser.getStatus().equals(verifiedStatus)) {
+                        message = "Your account is not verified. Please verify first!";
+                    } else {
+                        HttpSession httpSession = request.getSession();
+                        httpSession.setAttribute("user", singleUser);
+                        status = true;
+                        message = "Login successful";
+                    }
+                }
+            }
+            hibernateSession.close();
+        }
+        ///  login handling code | user authentication part-end
+
+
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        return AppUtil.GSON.toJson(responseObject);
+    }
+
+    public String verifyUserAccount(UserDTO userDTO) {
+        JsonObject responseObject = new JsonObject();
+        boolean status = false;
+        String message = "";
+
+        ///  logic handling part
+        if (userDTO.getEmail() == null) {
+            message = "Email is required!";
+        } else if (userDTO.getEmail().isBlank()) {
+            message = "Email address can not be empty!";
+        } else if (!userDTO.getEmail().matches(Validator.EMAIL_VALIDATION)) {
+            message = "Please provide valid email address!";
+        } else if (userDTO.getVerificationCode() == null) {
+            message = "Verification is required!";
+        } else if (userDTO.getVerificationCode().isBlank()) {
+            message = "Verification code can not be empty!";
+        } else if (!userDTO.getVerificationCode().matches(Validator.VERIFICATION_CODE_VALIDATION)) {
+            message = "Please provide valid verification code!. Verification code must have 6 digits";
+        } else {
+            Session hibernateSession = HibernateUtil.getSessionFactory().openSession();
+            User user = hibernateSession.createQuery("FROM User u WHERE u.email=:email AND u.verificationCode=:verificationCode", User.class)
+                    .setParameter("email", userDTO.getEmail())
+                    .setParameter("verificationCode", userDTO.getVerificationCode())
+                    .getSingleResultOrNull();
+            if (user == null) {
+                message = "Account not found. Please register first!";
+            } else {
+                Status verifiedStatus = hibernateSession.createNamedQuery("Status.findByValue", Status.class)
+                        .setParameter("value", String.valueOf(Status.Type.VERIFIED))
+                        .getSingleResult();
+
+                if (user.getStatus().equals(verifiedStatus)) {
+                    message = "Account already verified!";
+                } else {
+                    user.setStatus(verifiedStatus);
+                    user.setVerificationCode("");
+                    Transaction transaction = hibernateSession.beginTransaction();
+                    try {
+                        hibernateSession.merge(user);
+                        transaction.commit();
+                        status = true;
+                        message = "Account verification completed!";
+                    } catch (HibernateException e) {
+                        transaction.rollback();
+                        message = "Something went wrong. Verification process failed!";
+                    }
+                }
+            }
+            hibernateSession.close();
+        }
+
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        return AppUtil.GSON.toJson(responseObject);
+    }
 
 
 }

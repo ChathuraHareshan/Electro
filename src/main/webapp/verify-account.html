@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Account - Electro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 450px;
+      width: 100%;
+    }
+
+    .verify-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo svg {
+      width: 60px;
+      height: 60px;
+      fill: #667eea;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      color: #999;
+    }
+
+    .input-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: #999;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 15px 15px 15px 50px;
+      border: 2px solid #e1e5e9;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    input[type="text"]::placeholder {
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #999;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hint svg {
+      width: 16px;
+      height: 16px;
+      fill: #999;
+    }
+
+    .verify-btn {
+      width: 100%;
+      padding: 16px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .verify-btn:hover {
+      background: #5a67d8;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .verify-btn:active {
+      transform: translateY(0);
+    }
+
+    .verify-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+
+    .info-box {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .info-box svg {
+      width: 20px;
+      height: 20px;
+      fill: #667eea;
+      flex-shrink: 0;
+    }
+
+    .info-box p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .info-box a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .info-box a:hover {
+      text-decoration: underline;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .links a {
+      color: #667eea;
+      text-decoration: none;
+      font-size: 14px;
+      margin: 0 10px;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .error-message svg {
+      width: 18px;
+      height: 18px;
+      fill: #c33;
+    }
+
+    .success-message {
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .success-message svg {
+      width: 18px;
+      height: 18px;
+      fill: #2e7d32;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 480px) {
+      .verify-card {
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="verify-card">
+    <!-- Logo -->
+    <div class="logo">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+    </div>
+
+    <h1>Verify Your Account</h1>
+    <p class="subtitle">Enter the verification code sent to your email</p>
+
+    <!-- Error Message (hidden by default) -->
+    <div class="error-message" id="errorMessage">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+      <span id="errorText">Invalid verification code. Please try again.</span>
+    </div>
+
+    <!-- Success Message (hidden by default) -->
+    <div class="success-message" id="successMessage">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+      </svg>
+      <span id="successText">Account verified successfully!</span>
+    </div>
+
+    <!-- Verification Form -->
+    <form id="verifyForm">
+      <div class="form-group">
+        <label for="verificationCode">Verification Code</label>
+        <div class="input-wrapper">
+                        <span class="input-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                            </svg>
+                        </span>
+          <input
+                  type="text"
+                  id="verificationCode"
+                  name="code"
+                  placeholder="Enter 6-digit code"
+                  maxlength="6"
+                  pattern="[0-9]{6}"
+                  title="Please enter a 6-digit verification code"
+                  required
+          >
+        </div>
+        <div class="hint">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          <span>Enter the 6-digit code from your email</span>
+        </div>
+      </div>
+
+      <button type="button" class="verify-btn" id="submitBtn" onclick="verifyAccount();">
+        <span id="btnText">Verify Account</span>
+        <span id="btnLoader" style="display: none;" class="loading"></span>
+      </button>
+    </form>
+
+    <!-- Info Box -->
+    <div class="info-box">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+      <p>
+        Didn't receive a code?
+        <a href="#" onclick="resendCode(event)">Click here to resend</a>
+        <span id="resendTimer" style="display: none; margin-left: 5px; color: #999;"></span>
+      </p>
+    </div>
+
+    <!-- Additional Links -->
+    <div class="links">
+      <a href="/electro/login">Back to Login</a>
+      <a href="/electro/support">Need Help?</a>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/verify-account.js"></script>
+<script src="assets/js/notiflix-aio-3.2.8.min.js"></script>
+
+
+</body>
+</html>

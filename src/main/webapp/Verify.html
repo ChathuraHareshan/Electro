@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You for Registering - Electro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .thank-you-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: #28a745;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 30px;
+      animation: scaleIn 0.5s ease-out 0.3s both;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .success-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: white;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 32px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .greeting {
+      text-align: center;
+      color: #666;
+      font-size: 18px;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .email-highlight {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .email-icon {
+      background: #e8f0fe;
+      padding: 12px;
+      border-radius: 50%;
+    }
+
+    .email-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #667eea;
+    }
+
+    .email-content {
+      flex: 1;
+    }
+
+    .email-label {
+      font-size: 14px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+
+    .email-address {
+      font-size: 18px;
+      color: #333;
+      font-weight: 600;
+      word-break: break-all;
+    }
+
+    .verification-message {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .verification-message svg {
+      width: 24px;
+      height: 24px;
+      fill: #856404;
+      flex-shrink: 0;
+    }
+
+    .verification-message p {
+      color: #856404;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .steps-container {
+      margin-bottom: 35px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      transition: transform 0.2s;
+    }
+
+    .step:hover {
+      transform: translateX(5px);
+    }
+
+    .step-number {
+      width: 30px;
+      height: 30px;
+      background: #667eea;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      color: #555;
+      font-size: 16px;
+    }
+
+    .step-text strong {
+      color: #333;
+    }
+
+    .actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5a67d8;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #4a5568;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e0;
+      transform: translateY(-2px);
+    }
+
+    .resend-link {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .resend-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .resend-link a:hover {
+      color: #5a67d8;
+      text-decoration: underline;
+    }
+
+    .timer {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #667eea;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #999;
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      .thank-you-card {
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .email-highlight {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="thank-you-card">
+    <!-- Success Icon -->
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+      </svg>
+    </div>
+
+    <!-- Thank You Message -->
+    <h1>Thank You for Registering!</h1>
+    <p class="greeting">Welcome to Electro family! We're excited to have you on board.</p>
+
+    <!-- Email Display -->
+    <div class="email-highlight">
+      <div class="email-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+      </div>
+      <div class="email-content">
+        <div class="email-label">Registered Email</div>
+        <div class="email-address" id="userEmail">john.doe@example.com</div>
+      </div>
+    </div>
+
+    <!-- Verification Message -->
+    <div class="verification-message">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+      <p>
+        <strong>Verify your email address</strong><br>
+        We've sent a verification link to your email. Please check your inbox and click the link to activate your account.
+      </p>
+    </div>
+
+    <!-- Steps to Verify -->
+    <div class="steps-container">
+      <h3 style="margin-bottom: 15px; color: #333;">Next Steps:</h3>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-text">
+          <strong>Check your inbox</strong> for <span id="displayEmail" style="color: #667eea;">john.doe@example.com</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-text">
+          <strong>Click the verification link</strong> in the email
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-text">
+          <strong>Start shopping</strong> and enjoy exclusive benefits
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <a href="#" class="btn btn-primary" onclick="openEmailClient()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/>
+        </svg>
+        Open Email
+      </a>
+      <a href="/electro" class="btn btn-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Go to Home
+      </a>
+    </div>
+
+    <!-- Resend Email Link -->
+    <div class="resend-link">
+      Didn't receive the email?
+      <a href="#" onclick="resendVerification()">Click here to resend</a>
+      <span class="timer" id="timer"></span>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      Check your spam folder if you don't see the email in your inbox
+    </div>
+  </div>
+</div>
+
+<script>
+  function getEmailFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('email') || localStorage.getItem('registeredEmail') || 'john.doe@example.com';
+  }
+
+  const userEmail = getEmailFromUrl();
+  document.getElementById('userEmail').textContent = userEmail;
+  document.getElementById('displayEmail').textContent = userEmail;
+
+  localStorage.setItem('registeredEmail', userEmail);
+
+  function openEmailClient() {
+    const email = getEmailFromUrl();
+    window.location.href = `https://mail.google.com/mail/u/0/#search/from%3Anoreply%40electro.com`; // Gmail
+  }
+
+
+
+</script>
+</body>
+</html>
