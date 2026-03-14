@@ -62,13 +62,13 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #2B2D42;
+  color: #ffffff;
   font-weight: 700;
   margin: 0 0 10px;
 }
 
 a {
-  color: #2B2D42;
+  color: #ffffff;
   font-weight: 500;
   -webkit-transition: 0.2s color;
   transition: 0.2s color;
@@ -353,6 +353,377 @@ textarea.input {
   right: 0px;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* main wrapper – no reuse of class names */
+div[data-role="slots-holder"] {
+    max-width: 1280px;
+    width: 100%;
+    padding: 1rem 0.5rem;
+    background: white;
+    border-radius: 2rem;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+}
+
+/* top navigation – no class names, only element + attr */
+nav[aria-label="categories"] {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem 2.5rem;
+    padding: 1.2rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 1.5rem;
+}
+
+nav[aria-label="categories"] button {
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: 530;
+    padding: 0.3rem 0.9rem;
+    border-radius: 60px;
+    color: #1e293b;
+    cursor: pointer;
+    transition: 0.15s;
+    letter-spacing: -0.01em;
+}
+
+nav[aria-label="categories"] button:hover {
+    background: #eef2ff;
+    color: #1d4ed8;
+}
+
+nav[aria-label="categories"] button:active {
+    scale: 0.96;
+}
+
+/* slideshow viewport (cards container) */
+div[data-widget="scrolling-cards"] {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    padding: 0.8rem 0 1.8rem 0;
+    scroll-behavior: smooth;
+    cursor: grab;
+}
+
+div[data-widget="scrolling-cards"]:active {
+    cursor: grabbing;
+}
+
+/* card wrapper – all cards inline */
+div[data-group="card-collection"] {
+    display: inline-flex;
+    gap: 1.2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* individual card – no generic class */
+article[data-card] {
+    width: 200px;
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.02), 0 1px 3px rgba(0,0,0,0.05);
+    padding: 1rem 0.8rem 1rem 0.8rem;
+    display: inline-block;
+    white-space: normal;
+    border: 1px solid #f0f0f0;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+}
+
+article[data-card]:hover {
+    transform: translateY(-5px);
+    border-color: #cbd5e1;
+}
+
+/* image placeholder – but we use real images via emoji / bg (pure concept) */
+div[data-type="card-image"] {
+    width: 100%;
+    height: 130px;
+    background: #f1f5f9;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.2rem;
+    margin-bottom: 0.75rem;
+}
+
+h3[data-name] {
+    font-size: 1.2rem;
+    font-weight: 550;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+p[data-price] {
+    font-weight: 600;
+    color: #0f172b;
+    background: #f8fafc;
+    display: inline-block;
+    padding: 0.2rem 1rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+/* optional fine tuning for responsiveness */
+@media (max-width: 650px) {
+    article[data-card] {
+        width: 170px;
+    }
+    div[data-type="card-image"] {
+        height: 110px;
+        font-size: 2.8rem;
+    }
+    nav[aria-label="categories"] button {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 420px) {
+    article[data-card] {
+        width: 145px;
+    }
+}
+
+/* small indicator that it's automated (optional) */
+div[data-role="status-note"] {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 0.2rem;
+    border-top: 1px dashed #d1d9e6;
+    padding-top: 0.7rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* navigation container – no generic class names */
+[data-role="navbar"] {
+    background: #1e2b3c;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem 2.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+[data-role="nav-btn"] {
+    background: transparent;
+    border: none;
+    color: #eef4ff;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: 0.2s;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+[data-role="nav-btn"]:hover {
+    border-bottom-color: #D10024;
+    color: white;
+}
+
+/* slideshow wrapper – horizontal scroll, snap, hide scrollbar */
+[data-role="stage"] {
+    max-width: 1400px;
+    margin: 2rem auto 1.5rem auto;
+    padding: 0 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;  /* firefox */
+    border-radius: 20px;
+}
+
+[data-role="stage"]::-webkit-scrollbar {
+    display: none;  /* chrome/safari */
+}
+
+[data-role="track"] {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.5rem 0.25rem 1rem 0.25rem;
+    width: max-content;
+}
+
+/* each card — 16 unique items */
+[data-card] {
+    flex: 0 0 auto;
+    width: 240px;
+    background: white;
+    border-radius: 28px;
+    box-shadow: 0 15px 30px -10px rgba(0,20,30,0.2);
+    padding: 1.2rem 1rem 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s;
+    border: 1px solid #f0f4fa;
+}
+
+[data-card]:hover {
+    transform: translateY(-6px);
+}
+
+[data-card-image] {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 20px;
+    background: #f8fafd;
+    display: block;
+}
+
+[data-card-name] {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-top: 0.9rem;
+    color: #1f2a3f;
+    font-family: 'Inter', system-ui, sans-serif;
+    text-align: center;
+}
+
+[data-card-price] {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1f5e3a;
+    margin-top: 0.35rem;
+    letter-spacing: -0.5px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* tiny auto-scroll indicator (optional) – no classes */
+[data-role="footnote"] {
+    text-align: center;
+    font-family: monospace;
+    color: #4a5c72;
+    margin: 0.2rem 0 1.8rem 0;
+    font-size: 0.9rem;
+}
+
+/* responsive breakpoints: no media query abuse, just flex wrap + sizing */
+@media (max-width: 640px) {
+    [data-role="navbar"] {
+        gap: 1rem 1.2rem;
+        padding: 0.8rem 1rem;
+    }
+    [data-role="nav-btn"] {
+        font-size: 1rem;
+    }
+    [data-card] {
+        width: 180px;
+    }
+    [data-card-name] {
+        font-size: 1rem;
+    }
+    [data-card-price] {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 420px) {
+    [data-card] {
+        width: 150px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*----------------------------*\
 	Breadcrumb
 \*----------------------------*/
@@ -581,7 +952,7 @@ textarea.input {
 }
 
 .cart-dropdown .cart-list .product-widget .product-body .product-price {
-  color: #2B2D42;
+  color: #ffffff;
 }
 
 .cart-dropdown .cart-btns {
@@ -2083,7 +2454,7 @@ textarea.input {
 
 .slick-prev:before, .slick-next:before {
   font-family: FontAwesome;
-  color: #2B2D42;
+  color: #ffffff;
 }
 
 .slick-prev:before {
