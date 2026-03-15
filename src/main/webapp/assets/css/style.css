@@ -571,142 +571,134 @@ div[data-role="status-note"] {
 
 
 
+/* === reset / base — no generic classnames === */
 
-/* navigation container – no generic class names */
-[data-role="navbar"] {
-    background: #1e2b3c;
-    padding: 1rem 2rem;
+/* main wrapper – no common class */
+.unique__wrap {
+    max-width: 1280px;
+    width: 100%;
+    background: white;
+    border-radius: 2rem 2rem 1.5rem 1.5rem;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* ----- navigation (top) – no common classnames ----- */
+[data-role="navBar"] {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2rem 2.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    gap: 0.5rem 1.2rem;
+    background: #000000;
+    padding: 1rem 1.5rem;
+    border-bottom: 3px solid #000000;
 }
-
-[data-role="nav-btn"] {
+[data-nav-btn] {
     background: transparent;
     border: none;
     color: #eef4ff;
     font-size: 1.25rem;
     font-weight: 500;
-    letter-spacing: 0.5px;
-    padding: 0.5rem 0;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
     cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: 0.2s;
-    font-family: 'Segoe UI', system-ui, sans-serif;
+    transition: 0.15s;
+    letter-spacing: 0.3px;
+    border: 1px solid transparent;
 }
-
-[data-role="nav-btn"]:hover {
-    border-bottom-color: #D10024;
+[data-nav-btn]:hover {
+    background: #000000;
+    border-color: #ffffff;
     color: white;
 }
-
-/* slideshow wrapper – horizontal scroll, snap, hide scrollbar */
-[data-role="stage"] {
-    max-width: 1400px;
-    margin: 2rem auto 1.5rem auto;
-    padding: 0 1rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;  /* firefox */
-    border-radius: 20px;
+[data-nav-btn].activeTab {
+    background: #D10024;
+    color: #ffffff;
+    font-weight: 600;
 }
 
-[data-role="stage"]::-webkit-scrollbar {
-    display: none;  /* chrome/safari */
+/* ----- slideshow container (strictly responsive) ----- */
+[data-role="slideContainer"] {
+    position: relative;
+    width: 100%;
+    padding: 2rem 1rem 2.5rem 1rem;
+    background: #000000;
 }
-
+/* viewport with hidden overflow */
+[data-role="viewport"] {
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
+}
+/* card track – flex row, no generic class */
 [data-role="track"] {
     display: flex;
     gap: 1.5rem;
-    padding: 0.5rem 0.25rem 1rem 0.25rem;
-    width: max-content;
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+    will-change: transform;
+    padding: 0.2rem 0 0.8rem 0;
 }
-
-/* each card — 16 unique items */
+/* product card – no class, styled via attribute selector */
 [data-card] {
     flex: 0 0 auto;
-    width: 240px;
-    background: white;
-    border-radius: 28px;
-    box-shadow: 0 15px 30px -10px rgba(0,20,30,0.2);
-    padding: 1.2rem 1rem 1.5rem 1rem;
+    width: 210px;
+    background: rgba(255, 0, 0, 0);
+    border-radius: 1.8rem;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.03);
+    padding: 1.2rem 1rem 1.2rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.2s;
-    border: 1px solid #f0f4fa;
-}
-
-[data-card]:hover {
-    transform: translateY(-6px);
-}
-
-[data-card-image] {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 20px;
-    background: #f8fafd;
-    display: block;
-}
-
-[data-card-name] {
-    font-weight: 700;
-    font-size: 1.2rem;
-    margin-top: 0.9rem;
-    color: #1f2a3f;
-    font-family: 'Inter', system-ui, sans-serif;
     text-align: center;
+    border: 1px solid #D10024;
+    transition: transform 0.2s;
 }
-
+[data-card]:hover {
+    transform: translateY(-4px);
+    border-color: #ffb34777;
+}
+/* card image - local paths */
+[data-card-img] {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 1.2rem;
+    background: #e0e7ef;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    margin-bottom: 0.8rem;
+}
+[data-card-name] {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0.4rem 0 0.2rem;
+    color: #1e2b3c;
+}
 [data-card-price] {
     font-size: 1.3rem;
-    font-weight: 600;
-    color: #1f5e3a;
-    margin-top: 0.35rem;
-    letter-spacing: -0.5px;
-    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: #1b4d3d;
+    background: #e2f0e9;
+    padding: 0.2rem 1rem;
+    border-radius: 40px;
+    display: inline-block;
+    margin-top: 0.3rem;
+    border: 1px solid #a2cfb6;
 }
 
-/* tiny auto-scroll indicator (optional) – no classes */
-[data-role="footnote"] {
-    text-align: center;
-    font-family: monospace;
-    color: #4a5c72;
-    margin: 0.2rem 0 1.8rem 0;
-    font-size: 0.9rem;
+/* responsive adjustments – no new classes */
+@media (max-width: 680px) {
+    [data-card] { width: 170px; }
+    [data-nav-btn] { font-size: 1rem; padding: 0.4rem 1rem; }
 }
-
-/* responsive breakpoints: no media query abuse, just flex wrap + sizing */
-@media (max-width: 640px) {
-    [data-role="navbar"] {
-        gap: 1rem 1.2rem;
-        padding: 0.8rem 1rem;
-    }
-    [data-role="nav-btn"] {
-        font-size: 1rem;
-    }
-    [data-card] {
-        width: 180px;
-    }
-    [data-card-name] {
-        font-size: 1rem;
-    }
-    [data-card-price] {
-        font-size: 1.1rem;
-    }
+@media (max-width: 460px) {
+    [data-role="navBar"] { gap: 0.3rem; }
+    [data-nav-btn] { font-size: 0.9rem; padding: 0.3rem 0.7rem; }
+    [data-card] { width: 140px; }
+    [data-card-name] { font-size: 0.95rem; }
 }
-
-@media (max-width: 420px) {
-    [data-card] {
-        width: 150px;
-    }
+[data-role="viewport"] {
+    padding: 0 4px;
 }
-
 
 
 

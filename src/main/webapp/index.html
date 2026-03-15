@@ -262,26 +262,29 @@
 
 
         <!-- ========== navigation ========== -->
-        <div data-role="navbar">
-            <button data-role="nav-btn" data-jump="0">Laptops</button>
-            <button data-role="nav-btn" data-jump="4">Smartphones</button>
-            <button data-role="nav-btn" data-jump="8">Cameras</button>
-            <button data-role="nav-btn" data-jump="12">Accessories</button>
-        </div>
+        <div class="unique__wrap">
+            <!-- navigation – only attribute selectors, no common class names -->
+            <div data-role="navBar">
+                <button data-nav-btn id="navLaptops" class="activeTab">Laptops</button>
+                <button data-nav-btn id="navSmartphones">Smartphones</button>
+                <button data-nav-btn id="navCameras">Cameras</button>
+                <button data-nav-btn id="navAccessories">Accessories</button>
+            </div>
 
-        <!-- ========== slideshow stage & track ========== -->
-        <div data-role="stage" id="slideshowStage">
-            <div data-role="track" id="cardTrack">
-                <!-- 16 cards will be inserted from js (real images) -->
+            <!-- slideshow area -->
+            <div data-role="slideContainer">
+                <div data-role="viewport">
+                    <div data-role="track" id="productTrack">
+                        <!-- 16 cards will be injected via JavaScript -->
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div data-role="footnote">⏺ auto-scroll · 4s · click category jumps</div>
 
 
 
-
-
+        #D10024
 
 
 

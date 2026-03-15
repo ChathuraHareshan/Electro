@@ -1,181 +1,175 @@
 (function() {
-    // *******************************
-    // separate JavaScript file – no inline
-    // *******************************
-
-    // ----- real image links (unplash / placeholder – real photos) -----
+    // --- product data with LOCAL image paths (images stored inside project) ---
     const images = [
-        "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=300&h=300&fit=crop&auto=format", // laptop 1
-        "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?w=300&h=300&fit=crop&auto=format", // laptop 2
-        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&h=300&fit=crop&auto=format", // laptop 3
-        "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=300&h=300&fit=crop&auto=format", // laptop 4
-        "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=300&fit=crop&auto=format", // smartphone 5
-        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop&auto=format", // smartphone 6
-        "https://images.unsplash.com/photo-1565849904461-af22c6c56ea9?w=300&h=300&fit=crop&auto=format", // smartphone 7
-        "https://images.unsplash.com/photo-1603921326210-6edd2d60ca68?w=300&h=300&fit=crop&auto=format", // smartphone 8
-        "https://images.unsplash.com/photo-1502920917128-1aa5007642bd?w=300&h=300&fit=crop&auto=format", // camera 9
-        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=300&h=300&fit=crop&auto=format", // camera 10
-        "https://images.unsplash.com/photo-1510127034890-ba27508e9f1c?w=300&h=300&fit=crop&auto=format", // camera 11
-        "https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=300&h=300&fit=crop&auto=format", // camera 12
-        "https://images.unsplash.com/photo-1521296797187-726205347bc9?w=300&h=300&fit=crop&auto=format", // accessory 13
-        "https://images.unsplash.com/photo-1625773049546-f625f248cccd?w=300&h=300&fit=crop&auto=format", // accessory 14
-        "https://images.unsplash.com/photo-1541807652-4b8f3cee7c2d?w=300&h=300&fit=crop&auto=format", // accessory 15
-        "https://images.unsplash.com/photo-1503602642458-232111445657?w=300&h=300&fit=crop&auto=format"  // accessory 16
+        'images/laptop-x1.jpg',
+        'images/ultrabook-pro.jpg',
+        'images/gaming-16.jpg',
+        'images/thin-air.jpg',
+        'images/smart-s23.jpg',
+        'images/iphone-15.jpg',
+        'images/pixel-8.jpg',
+        'images/galaxy-z.jpg',
+        'images/dslr-mark2.jpg',
+        'images/mirrorless-z5.jpg',
+        'images/action-cam.jpg',
+        'images/zoom-lens.jpg',
+        'images/mouse-pro.jpg',
+        'images/mech-kb.jpg',
+        'images/headphones.jpg',
+        'images/powerbank.jpg'
     ];
 
-    // names & prices (diverse)
     const names = [
-        "XPS 15", "Swift 3", "ROG Zephyrus", "MacBook Air",
-        "Galaxy S23", "iPhone 15", "Pixel 8", "Xperia 1",
-        "Alpha A7", "EOS R6", "Lumix GH6", "Z 30",
-        "QuickCharge Pro", "Carbon Tripod", "ND Filter", "Backpack 20L"
+        'Apple MacBook Neo', 'Apple MacBook Air 15‑inch M4', 'Acer Swift 16 AI"', 'Lenovo ThinkPad X1 Carbon Gen 13',
+        'Google Pixel 10 Pro XL', 'Apple iPhone 17 Pro Max', 'Samsung Galaxy S26 Ultra', 'Xiaomi 17 Ultra',
+        'Sony A7 IV', 'Canon EOS R6 II', 'Fujifilm X‑T5', 'Panasonic Lumix GH6 II',
+        'Mouse Pro', 'Mech KB', 'Headphones', 'PowerBank'
     ];
 
-    const prices = [
-        "$1,299", "$799", "$1,899", "$1,099",
-        "$899", "$1,199", "$699", "$1,079",
-        "$2,199", "$2,499", "$1,799", "$999",
-        "$49", "$189", "$79", "$129"
-    ];
+    const prices = [1299, 1599, 1899, 1099, 899, 1199, 799, 1399, 1999, 1799, 399, 649, 79, 159, 249, 69];
 
-    // get track element
-    const track = document.getElementById('cardTrack');
-    if (!track) return;
+    // 1. build 16 cards inside track
+    const track = document.getElementById('productTrack');
+    if (track) {
+        for (let i = 0; i < 16; i++) {
+            const card = document.createElement('div');
+            card.setAttribute('data-card', '');
 
-    // build 16 cards (no class names, only attributes)
-    for (let i = 0; i < 16; i++) {
-        const card = document.createElement('div');
-        card.setAttribute('data-card', i + 1); // 1..16 (just for consistency)
+            // image with local path
+            const img = document.createElement('img');
+            img.setAttribute('data-card-img', '');
+            img.src = images[i];
+            img.alt = names[i];
 
-        // image element
-        const img = document.createElement('img');
-        img.setAttribute('data-card-image', '');
-        img.src = images[i];
-        img.alt = names[i] + ' photo';
-        img.loading = 'lazy';
+            // name
+            const nameEl = document.createElement('div');
+            nameEl.setAttribute('data-card-name', '');
+            nameEl.textContent = names[i];
 
-        // name element
-        const nameEl = document.createElement('div');
-        nameEl.setAttribute('data-card-name', '');
-        nameEl.textContent = names[i];
+            // price
+            const priceEl = document.createElement('div');
+            priceEl.setAttribute('data-card-price', '');
+            priceEl.textContent = `$${prices[i]}`;
 
-        // price element
-        const priceEl = document.createElement('div');
-        priceEl.setAttribute('data-card-price', '');
-        priceEl.textContent = prices[i];
-
-        card.appendChild(img);
-        card.appendChild(nameEl);
-        card.appendChild(priceEl);
-        track.appendChild(card);
+            card.appendChild(img);
+            card.appendChild(nameEl);
+            card.appendChild(priceEl);
+            track.appendChild(card);
+        }
     }
 
-    // ----- stage and auto-scroll logic -----
-    const stage = document.getElementById('slideshowStage');
-    if (!stage) return;
+    // 2. slideshow logic
+    const viewport = document.querySelector('[data-role="viewport"]');
+    const container = document.querySelector('[data-role="slideContainer"]');
+    let currentIndex = 0;
+    const cardCount = 16;
+    let cardWidth = 210;
+    let gap = 24;
+    let autoScrollInterval = null;
 
-    // calculate card width including gap (gap 1.5rem = 24px)
-    let cardWidth = 0;
-    function getCardUnit() {
+    function refreshMetrics() {
         const firstCard = track.querySelector('[data-card]');
-        if (!firstCard) return 264; // fallback ~ width+gap
-        const style = window.getComputedStyle(firstCard);
-        const width = parseFloat(style.width) || 240;
-        const gap = 24; // 1.5rem = 24px
-        return width + gap;
+        if (firstCard) {
+            const style = window.getComputedStyle(firstCard);
+            cardWidth = firstCard.offsetWidth;
+            gap = 24;
+        }
     }
 
-    let autoScrollInterval;
-    let currentIndex = 0;  // zero based, card index to scroll to next
-
-    function scrollToCard(index) {
-        if (!stage || !track) return;
-        const unit = getCardUnit();
-        // index is zero-based: 0 => first card, 4 => 5th card, etc.
-        const scrollLeft = index * unit;
-        stage.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+    function getMaxScroll() {
+        const step = cardWidth + gap;
+        return (cardCount - 1) * step;
     }
 
-    // advance to next card modulo 16
-    function advanceSlide() {
-        if (!stage || !track) return;
-        const unit = getCardUnit();
-        const maxIndex = 15; // 0..15
-        // determine next index based on current scroll
-        const currentScroll = stage.scrollLeft;
-        // estimate which card is mostly visible (simple rounding)
-        const approxIndex = Math.round(currentScroll / unit);
-        let nextIndex = (approxIndex + 1) % 16;
-        // boundary safety
-        if (nextIndex > 15) nextIndex = 0;
-        scrollToCard(nextIndex);
+    function updateScrollPosition(index, smooth = true) {
+        if (!track) return;
+        refreshMetrics();
+        const step = cardWidth + gap;
+        let translateX = index * step;
+        const maxTranslate = (cardCount - 1) * step;
+        if (translateX > maxTranslate) translateX = maxTranslate;
+        if (translateX < 0) translateX = 0;
+        track.style.transition = smooth ? 'transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1)' : 'none';
+        track.style.transform = `translateX(-${translateX}px)`;
     }
 
-    // start auto scroll (4 seconds)
     function startAutoScroll() {
         if (autoScrollInterval) clearInterval(autoScrollInterval);
-        autoScrollInterval = setInterval(advanceSlide, 3000);
-    }
-
-    // restart timer after manual interaction or jump
-    function restartAutoScroll() {
-        if (autoScrollInterval) {
-            clearInterval(autoScrollInterval);
-            autoScrollInterval = setInterval(advanceSlide, 2000);
-        }
-    }
-
-    // ----- navigation jump: laptops->card0, smartphones->card4, cameras->card8, accessories->card12
-    const navButtons = document.querySelectorAll('[data-role="nav-btn"]');
-    navButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            const jumpRaw = this.getAttribute('data-jump');
-            if (jumpRaw === null) return;
-            const targetIndex = parseInt(jumpRaw, 10); // 0,4,8,12
-            if (!isNaN(targetIndex)) {
-                scrollToCard(targetIndex);
-                restartAutoScroll();
+        autoScrollInterval = setInterval(() => {
+            if (!track) return;
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= cardCount) {
+                nextIndex = 0;
             }
+            currentIndex = nextIndex;
+            updateScrollPosition(currentIndex, true);
+        }, 4000);
+    }
+
+    function restartAutoScroll() {
+        startAutoScroll();
+    }
+
+    function goToCardIndex(targetIndex) {
+        if (targetIndex < 0 || targetIndex >= cardCount) return;
+        currentIndex = targetIndex;
+        updateScrollPosition(currentIndex, true);
+        restartAutoScroll();
+    }
+
+    const btnLaptops = document.getElementById('navLaptops');
+    const btnSmart = document.getElementById('navSmartphones');
+    const btnCam = document.getElementById('navCameras');
+    const btnAcc = document.getElementById('navAccessories');
+
+    function clearActiveNav() {
+        document.querySelectorAll('[data-nav-btn]').forEach(btn => btn.classList.remove('activeTab'));
+    }
+
+    if (btnLaptops) {
+        btnLaptops.addEventListener('click', () => {
+            goToCardIndex(0);
+            clearActiveNav();
+            btnLaptops.classList.add('activeTab');
         });
+    }
+    if (btnSmart) {
+        btnSmart.addEventListener('click', () => {
+            goToCardIndex(4);
+            clearActiveNav();
+            btnSmart.classList.add('activeTab');
+        });
+    }
+    if (btnCam) {
+        btnCam.addEventListener('click', () => {
+            goToCardIndex(8);
+            clearActiveNav();
+            btnCam.classList.add('activeTab');
+        });
+    }
+    if (btnAcc) {
+        btnAcc.addEventListener('click', () => {
+            goToCardIndex(12);
+            clearActiveNav();
+            btnAcc.classList.add('activeTab');
+        });
+    }
+
+    window.addEventListener('load', () => {
+        refreshMetrics();
+        currentIndex = 0;
+        updateScrollPosition(0, false);
+        startAutoScroll();
     });
 
-    // stop auto scroll during manual scrolling, then restart after a short idle
-    let scrollTimeout;
-    stage.addEventListener('scroll', () => {
-        // clear existing timeout
-        if (scrollTimeout) clearTimeout(scrollTimeout);
-        // pause autoScroll while user drags / touches
-        if (autoScrollInterval) {
-            clearInterval(autoScrollInterval);
-            autoScrollInterval = null;
-        }
-        // restart after 700ms idle
-        scrollTimeout = setTimeout(() => {
-            startAutoScroll();
-        }, 700);
-    });
-
-    // also restart after a potential programmatic scroll (but we don't want to double)
-    // we handle by restartAutoScroll inside click only. startAutoScroll also on load.
-
-    // initial card width might not be ready immediately, wait for layout
-    window.addEventListener('load', function() {
-        // make sure stage starts at first card (index 0)
-        setTimeout(() => {
-            stage.scrollLeft = 0;  // no smooth, just set
-            startAutoScroll();
-        }, 30);
-    });
-
-    // if images load later, unit may change; update on resize
+    let resizeTimer;
     window.addEventListener('resize', () => {
-        // restart from current index to avoid misalignment, keep same relative index
-        if (!stage) return;
-        const unit = getCardUnit();
-        const currentScroll = stage.scrollLeft;
-        const idx = Math.round(currentScroll / unit);
-        // re-sync using same index
-        scrollToCard(idx);
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            refreshMetrics();
+            updateScrollPosition(currentIndex, false);
+        }, 100);
     });
 
+    if (btnLaptops) btnLaptops.classList.add('activeTab');
 })();
