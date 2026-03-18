@@ -28,12 +28,12 @@
     <property name="hibernate.use_sql_comments">true</property>
 
     <mapping class="com.electro.entity.Color"/>
+    <mapping class="com.electro.entity.Category"/>
     <mapping class="com.electro.entity.Product"/>
-    <mapping class="com.electro.entity.Product_img"/>
-    <mapping class="com.electro.entity.Product_variant"/>
     <mapping class="com.electro.entity.Storage"/>
     <mapping class="com.electro.entity.User"/>
     <mapping class="com.electro.entity.Status"/>
+    <mapping class="com.electro.entity.Stock"/>
 
 
   </session-factory>

@@ -6,9 +6,545 @@
     <title>Electro · cyber dashboard</title>
     <!-- Font Awesome Icons (free) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <!-- Chart.js for analytics -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0a0000;
+            color: #f0e6e6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: #110202;
+            border-right: 1px solid #ff4d4d30;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 0 1.5rem 0;
+            box-shadow: 8px 0 20px rgba(255, 0, 0, 0.1);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 1.5rem 2rem 1.5rem;
+            border-bottom: 1px solid #ff4d4d20;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: #ff4d4d;
+            filter: drop-shadow(0 0 8px #ff4d4d);
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ffb3b3, #ff4d4d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .sidebar-nav li {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #ffcccc;
+        }
+
+        .sidebar-nav li i {
+            width: 24px;
+            font-size: 1.2rem;
+            color: #ff8888;
+        }
+
+        .sidebar-nav li.active {
+            background: #ff0f0f20;
+            border-left: 4px solid #ff4d4d;
+            color: white;
+        }
+
+        .sidebar-nav li.active i {
+            color: #ff4d4d;
+        }
+
+        .sidebar-nav li:hover:not(.active) {
+            background: #330000;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+            border-top: 1px solid #ff4d4d30;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #ffaaaa;
+            cursor: pointer;
+        }
+
+        .sidebar-footer i {
+            font-size: 1.2rem;
+        }
+
+        .sidebar-footer:hover {
+            color: #ff4d4d;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            background: radial-gradient(circle at 10% 20%, #1f0303, #080000);
+        }
+
+        /* Scrollbar styling */
+        .main-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: #1f0f0f;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: #ff4d4d;
+            border-radius: 10px;
+        }
+
+        /* Cards */
+        .card {
+            background: #110404;
+            border: 1px solid #ff4d4d30;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px -10px #ff000030;
+            backdrop-filter: blur(2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-label {
+            color: #ffbebe;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.2;
+        }
+
+        /* Table styles */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1200px;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 0.5rem;
+            color: #ff8888;
+            font-weight: 500;
+            border-bottom: 2px solid #ff4d4d40;
+            background: #1a0505;
+        }
+
+        td {
+            padding: 1rem 0.5rem;
+            border-bottom: 1px solid #ff4d4d20;
+            color: #ffdddd;
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: #1f0808;
+        }
+
+        /* Product images in table */
+        .product-thumbnails {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .product-thumb {
+            width: 40px;
+            height: 40px;
+            background: #2a0a0a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ff4d4d;
+            font-size: 0.7rem;
+            color: #ffaaaa;
+        }
+
+        /* Storage and color chips */
+        .storage-chip {
+            background: #2a0a0a;
+            border: 1px solid #ff4d4d;
+            border-radius: 16px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .color-dot {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin: 2px;
+            border: 2px solid #ffdddd;
+        }
+
+        .price-tag {
+            color: #77ff77;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.shipped {
+            background: #772222;
+            color: #ffb3b3;
+        }
+
+        .status-badge.pending {
+            background: #442211;
+            color: #ffbb77;
+        }
+
+        .status-badge.delivered {
+            background: #224422;
+            color: #aaffaa;
+        }
+
+        .btn-icon {
+            background: transparent;
+            border: 1px solid #ff4d4d60;
+            color: #ffbebe;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-icon:hover {
+            background: #ff4d4d;
+            color: black;
+        }
+
+        .btn-primary {
+            background: #ff4d4d;
+            border: none;
+            color: black;
+            font-weight: 600;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            box-shadow: 0 0 15px #ff4d4d;
+        }
+
+        .btn-primary:hover {
+            background: #ff7777;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid #ff4d4d;
+            color: #ffbebe;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            background: #1f0f0f;
+            border: 1px solid #ff4d4d60;
+            padding: 0.7rem 1.2rem;
+            border-radius: 40px;
+            color: white;
+            width: 250px;
+        }
+
+        .search-bar::placeholder {
+            color: #ffaaaa80;
+        }
+
+        .recent-list {
+            list-style: none;
+            margin-top: 1.2rem;
+        }
+
+        .recent-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #ff4d4d20;
+        }
+
+        /* Toggle switch */
+        .toggle-switch {
+            appearance: none;
+            width: 44px;
+            height: 24px;
+            background: #440000;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid #ff4d4d;
+        }
+
+        .toggle-switch:checked {
+            background: #ff4d4d;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: 0.2s;
+        }
+
+        .toggle-switch:checked::before {
+            left: 22px;
+        }
+
+        /* Chart row */
+        .chart-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .chart-box {
+            background: #110404;
+            border: 1px solid #ff4d4d30;
+            border-radius: 24px;
+            padding: 1rem;
+            height: 250px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #ff4d4d30;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            padding: 0.7rem 1.5rem;
+            cursor: pointer;
+            border-radius: 40px 40px 0 0;
+            color: #ffbebe;
+            transition: 0.2s;
+        }
+
+        .tab.active {
+            background: #ff4d4d20;
+            color: white;
+            border-bottom: 2px solid #ff4d4d;
+        }
+
+        /* Form styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffbebe;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #1f0f0f;
+            border: 1px solid #ff4d4d60;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ff4d4d;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Image upload area */
+        .image-upload-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .image-upload-item {
+            background: #1f0f0f;
+            border: 1px solid #ff4d4d60;
+            border-radius: 16px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .image-upload-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ffbebe;
+            font-size: 0.9rem;
+        }
+
+        .image-upload-input {
+            display: none;
+        }
+
+        .image-upload-box {
+            border: 2px dashed #ff4d4d60;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-upload-box:hover {
+            border-color: #ff4d4d;
+            background: #2f1a1a;
+        }
+
+        .image-upload-box i {
+            font-size: 2rem;
+            color: #ff8888;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .upload-placeholder {
+            color: #ffaaaa;
+            font-size: 0.8rem;
+        }
+
+        .remove-image-btn {
+            background: #ff4d4d;
+            color: black;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .remove-image-btn:hover {
+            background: #ff7777;
+        }
+
+        /* Category select */
+        .category-badge {
+            background: #2a0a0a;
+            border: 1px solid #ff4d4d;
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+    </style>
 </head>
 <body>
 <div class="dashboard-container">
@@ -20,12 +556,12 @@
         </div>
         <nav class="sidebar-nav">
             <ul>
-                <li class="active" data-page="overview"><i class="fas fa-chart-pie"></i> <span>Overview</span></li>
-                <li data-page="products"><i class="fas fa-box"></i> <span>Products</span></li>
-                <li data-page="orders"><i class="fas fa-shopping-cart"></i> <span>Orders</span></li>
-                <li data-page="customers"><i class="fas fa-users"></i> <span>Customers</span></li>
-                <li data-page="analytics"><i class="fas fa-chart-line"></i> <span>Analytics</span></li>
-                <li data-page="settings"><i class="fas fa-cog"></i> <span>Settings</span></li>
+                <li class="active"><i class="fas fa-chart-pie"></i> <span>Overview</span></li>
+                <li><i class="fas fa-box"></i> <span>Products</span></li>
+                <li><i class="fas fa-shopping-cart"></i> <span>Orders</span></li>
+                <li><i class="fas fa-users"></i> <span>Customers</span></li>
+                <li><i class="fas fa-chart-line"></i> <span>Analytics</span></li>
+                <li><i class="fas fa-cog"></i> <span>Settings</span></li>
             </ul>
         </nav>
         <div class="sidebar-footer">
@@ -33,14 +569,668 @@
         </div>
     </aside>
 
-    <!-- MAIN CONTENT (dynamic pages injected by JS) -->
+    <!-- MAIN CONTENT -->
     <main class="main-content" id="main-content">
-        <!-- dynamic content loads here -->
+        <!-- Overview Page Content -->
+        <div id="overview-page">
+            <div class="stats-grid">
+                <div class="card"><div class="stat-label">Total Revenue</div><div class="stat-value">$284.5K</div><span style="color:#ff8888">↑ 12%</span></div>
+                <div class="card"><div class="stat-label">Total Orders</div><div class="stat-value">2,413</div><span>+94</span></div>
+                <div class="card"><div class="stat-label">Customers</div><div class="stat-value">1,289</div><span>new 43</span></div>
+                <div class="card"><div class="stat-label">Products</div><div class="stat-value">347</div><span>active 312</span></div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.8rem; margin-bottom: 2rem;">
+                <!-- Live Chart Card (Static version) -->
+                <div class="card" style="height: 320px; display: flex; flex-direction: column; padding: 1rem 1.2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h4 style="margin:0; color:#ff8888;">📈 Weekly Sales (live)</h4>
+                        <span style="background: #1f0f0f; padding:0.2rem 0.8rem; border-radius: 30px; border:1px solid red; font-size:0.8rem;">
+                            <span style="color:#77ff77;">+2.4%</span>
+                        </span>
+                    </div>
+                    <!-- Time indicator -->
+                    <div style="display: flex; justify-content: space-between; font-size:0.9rem; color:#aaa; border-bottom:1px solid #ff4d4d30; padding-bottom:0.5rem;">
+                        <span>⏱️ <span style="color:#ff7b7b; font-family: monospace;">updating 3s</span></span>
+                        <span>⚡ <span style="color:#ffaaaa;">641.86</span></span>
+                    </div>
+                    <!-- Static chart representation -->
+                    <div style="flex:1; margin-top: 10px; min-height:0; position: relative; background: linear-gradient(180deg, #ff4d4d10 0%, #330000 100%); border-radius: 16px; display: flex; align-items: flex-end; padding: 0 10px 20px 10px;">
+                        <div style="display: flex; align-items: flex-end; justify-content: space-around; width: 100%; height: 100%;">
+                            <div style="width: 14px; background: #ff4d4d; height: 45%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 52%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 48%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 58%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 64%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 60%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 70%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 75%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 68%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 80%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 85%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 75%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 82%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 88%; border-radius: 20px 20px 4px 4px;"></div>
+                            <div style="width: 14px; background: #ff4d4d; height: 84%; border-radius: 20px 20px 4px 4px;"></div>
+                        </div>
+                    </div>
+                    <!-- Mini stats -->
+                    <div style="display: flex; justify-content: space-between; margin-top: 8px; color: #ffbebe; border-top: 1px solid #ff4d4d40; padding-top: 8px; font-size:0.85rem;">
+                        <span>💰 High <span>88.0</span></span>
+                        <span>📉 Low <span>42.0</span></span>
+                        <span>📊 Vol <span>2.4K</span></span>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Card -->
+                <div class="card">
+                    <h4>⚡ Recent Activity</h4>
+                    <ul class="recent-list">
+                        <li><span>Order #EL9032</span> <span style="color:#ff7b7b">$1,240</span></li>
+                        <li><span>New user: Alex R.</span> <span>just now</span></li>
+                        <li><span>Product restock</span> <span>5 min ago</span></li>
+                        <li><span>Refund processed</span> <span>23 min ago</span></li>
+                        <li><span>BTC update</span> <span style="color:#77ff77;">+1.2%</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Page Content (with tabs) -->
+        <div id="products-page" style="display: none;">
+            <!-- Products Header with Tabs -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="color:#ffbebe"><i class="fas fa-box"></i> Products Management</h2>
+                <div><input type="text" class="search-bar" placeholder="🔍 Search product..."></div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-product-tab="list">Product List</div>
+                <div class="tab" data-product-tab="add" id="addProductBtn">Add New Product</div>
+                <div class="tab" data-product-tab="categories">Categories</div>
+            </div>
+
+            <!-- Product List Tab -->
+            <div id="product-list-tab">
+                <div class="card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Images</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Storage</th>
+                                <th>Colors</th>
+                                <th>Qty</th>
+                                <th>Price (by storage)</th>
+                                <th>Category</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="product-thumbnails">
+                                        <div class="product-thumb"><i class="fas fa-headphones"></i></div>
+                                        <div class="product-thumb"><i class="fas fa-image"></i></div>
+                                        <div class="product-thumb"><i class="fas fa-plus"></i></div>
+                                    </div>
+                                </td>
+                                <td>Nova Buds Pro</td>
+                                <td><small>Wireless earbuds with ANC</small></td>
+                                <td>
+                                    <span class="storage-chip">32GB</span>
+                                    <span class="storage-chip">64GB</span>
+                                </td>
+                                <td>
+                                    <span class="color-dot" style="background: #000000;"></span>
+                                    <span class="color-dot" style="background: #ffffff;"></span>
+                                    <span class="color-dot" style="background: #ff0000;"></span>
+                                </td>
+                                <td>45</td>
+                                <td>
+                                    <div><span class="storage-chip">32GB</span> <span class="price-tag">$129</span></div>
+                                    <div><span class="storage-chip">64GB</span> <span class="price-tag">$149</span></div>
+                                </td>
+                                <td><span class="category-badge">Audio</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-copy"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-thumbnails">
+                                        <div class="product-thumb"><i class="fas fa-laptop"></i></div>
+                                        <div class="product-thumb"><i class="fas fa-image"></i></div>
+                                    </div>
+                                </td>
+                                <td>Phantom X1</td>
+                                <td><small>Gaming laptop RTX 4060</small></td>
+                                <td>
+                                    <span class="storage-chip">512GB</span>
+                                    <span class="storage-chip">1TB</span>
+                                    <span class="storage-chip">2TB</span>
+                                </td>
+                                <td>
+                                    <span class="color-dot" style="background: #2c2c2c;"></span>
+                                    <span class="color-dot" style="background: #8b0000;"></span>
+                                </td>
+                                <td>12</td>
+                                <td>
+                                    <div><span class="storage-chip">512GB</span> <span class="price-tag">$1,299</span></div>
+                                    <div><span class="storage-chip">1TB</span> <span class="price-tag">$1,599</span></div>
+                                    <div><span class="storage-chip">2TB</span> <span class="price-tag">$1,899</span></div>
+                                </td>
+                                <td><span class="category-badge">Laptops</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-copy"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-thumbnails">
+                                        <div class="product-thumb"><i class="fas fa-clock"></i></div>
+                                        <div class="product-thumb"><i class="fas fa-image"></i></div>
+                                        <div class="product-thumb"><i class="fas fa-image"></i></div>
+                                    </div>
+                                </td>
+                                <td>Cyber Watch Z</td>
+                                <td><small>Smartwatch with health tracking</small></td>
+                                <td>
+                                    <span class="storage-chip">8GB</span>
+                                    <span class="storage-chip">16GB</span>
+                                </td>
+                                <td>
+                                    <span class="color-dot" style="background: #000000;"></span>
+                                    <span class="color-dot" style="background: #c0c0c0;"></span>
+                                    <span class="color-dot" style="background: #ffd700;"></span>
+                                </td>
+                                <td>28</td>
+                                <td>
+                                    <div><span class="storage-chip">8GB</span> <span class="price-tag">$249</span></div>
+                                    <div><span class="storage-chip">16GB</span> <span class="price-tag">$349</span></div>
+                                </td>
+                                <td><span class="category-badge">Wearables</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-copy"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="product-thumbnails">
+                                        <div class="product-thumb"><i class="fas fa-tv"></i></div>
+                                        <div class="product-thumb"><i class="fas fa-image"></i></div>
+                                    </div>
+                                </td>
+                                <td>Nova 4K Display</td>
+                                <td><small>27" 4K HDR Monitor</small></td>
+                                <td>
+                                    <span class="storage-chip">N/A</span>
+                                </td>
+                                <td>
+                                    <span class="color-dot" style="background: #000000;"></span>
+                                </td>
+                                <td>8</td>
+                                <td>
+                                    <div><span class="price-tag">$529</span></div>
+                                </td>
+                                <td><span class="category-badge">Monitors</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-copy"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Product Tab -->
+            <div id="add-product-tab" style="display: none;">
+                <div class="card">
+                    <h4 style="margin-bottom: 1.5rem; color: #ff8888;">➕ Add New Product</h4>
+
+                    <form id="productForm">
+                        <div class="form-grid">
+                            <!-- Left Column -->
+                            <div>
+                                <div class="form-group">
+                                    <label>Product Title *</label>
+                                    <input type="text" class="form-control" placeholder="e.g., Nova Buds Pro" id="title" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Description *</label>
+                                    <textarea class="form-control" placeholder="Full product description..." id="description" required></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Category *</label>
+                                    <select class="form-control" id="category" required>
+                                        <option value="">Select category</option>
+                                        <option value="1">Audio</option>
+                                        <option value="2">Laptops</option>
+                                        <option value="3">Wearables</option>
+                                        <option value="4">Monitors</option>
+                                        <option value="5">Smartphones</option>
+                                        <option value="6">Tablets</option>
+                                        <option value="7">Accessories</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Quantity in Stock *</label>
+                                    <input type="number" class="form-control" placeholder="0" min="1" id="qty" required>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div>
+                                <div class="form-group">
+                                    <label>Colors Available *</label>
+                                    <select class="form-control" id="color" required>
+                                        <option value="0">Select a Color</option>
+                                        <!-- Colors will be loaded dynamically -->
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Storage *</label>
+                                    <select class="form-control" id="storage" required>
+                                        <option value="0">Select a Storage</option>
+                                        <!-- Storage options will be loaded dynamically -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Product Price *</label>
+                                    <input type="number" step="0.01" class="form-control" placeholder="e.g., 3500" id="price" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Upload Section - Three separate image uploads -->
+                        <div class="form-group" style="margin-top: 2rem;">
+                            <label style="font-size: 1.1rem; margin-bottom: 1rem; color: #ff8888;">📸 Product Images * (Upload up to 3 images)</label>
+
+                            <div class="image-upload-grid">
+                                <!-- Image 1 Upload -->
+                                <div class="image-upload-item">
+                                    <label class="image-upload-label">Main Image</label>
+                                    <input type="file" id="img1" class="image-upload-input" accept="image/jpeg,image/png,image/webp" onchange="previewImage(this, 'preview1', 'placeholder1', 'removeBtn1')">
+                                    <div class="image-upload-box" onclick="document.getElementById('img1').click()">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <img id="preview1" class="image-preview" src="#" alt="Preview">
+                                        <div id="placeholder1" class="upload-placeholder">
+                                            <p>Click to upload main image</p>
+                                            <small>JPG, PNG, WEBP (Max 5MB)</small>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="removeBtn1" class="remove-image-btn" style="display: none;" onclick="removeImage('img1', 'preview1', 'placeholder1', 'removeBtn1')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Image 2 Upload -->
+                                <div class="image-upload-item">
+                                    <label class="image-upload-label">Image 2</label>
+                                    <input type="file" id="img2" class="image-upload-input" accept="image/jpeg,image/png,image/webp" onchange="previewImage(this, 'preview2', 'placeholder2', 'removeBtn2')">
+                                    <div class="image-upload-box" onclick="document.getElementById('img2').click()">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <img id="preview2" class="image-preview" src="#" alt="Preview">
+                                        <div id="placeholder2" class="upload-placeholder">
+                                            <p>Click to upload image 2</p>
+                                            <small>JPG, PNG, WEBP (Max 5MB)</small>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="removeBtn2" class="remove-image-btn" style="display: none;" onclick="removeImage('img2', 'preview2', 'placeholder2', 'removeBtn2')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Image 3 Upload -->
+                                <div class="image-upload-item">
+                                    <label class="image-upload-label">Image 3</label>
+                                    <input type="file" id="img3" class="image-upload-input" accept="image/jpeg,image/png,image/webp" onchange="previewImage(this, 'preview3', 'placeholder3', 'removeBtn3')">
+                                    <div class="image-upload-box" onclick="document.getElementById('img3').click()">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <img id="preview3" class="image-preview" src="#" alt="Preview">
+                                        <div id="placeholder3" class="upload-placeholder">
+                                            <p>Click to upload image 3</p>
+                                            <small>JPG, PNG, WEBP (Max 5MB)</small>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="removeBtn3" class="remove-image-btn" style="display: none;" onclick="removeImage('img3', 'preview3', 'placeholder3', 'removeBtn3')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="action-buttons">
+                            <button type="button" class="btn-secondary" onclick="resetForm()">Cancel</button>
+                            <button type="button" class="btn-primary" onclick="addProduct();">
+                                <i class="fas fa-save"></i> Save Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Categories Tab -->
+            <div id="categories-tab" style="display: none;">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h4 style="color: #ff8888;">📁 Product Categories</h4>
+                        <button class="btn-primary"><i class="fas fa-plus"></i> Add Category</button>
+                    </div>
+
+                    <table style="min-width: 600px;">
+                        <thead>
+                        <tr>
+                            <th>Category Name</th>
+                            <th>Products</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Audio</td>
+                            <td>45</td>
+                            <td><span class="status-badge delivered">active</span></td>
+                            <td>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Laptops</td>
+                            <td>23</td>
+                            <td><span class="status-badge delivered">active</span></td>
+                            <td>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Wearables</td>
+                            <td>34</td>
+                            <td><span class="status-badge delivered">active</span></td>
+                            <td>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Monitors</td>
+                            <td>18</td>
+                            <td><span class="status-badge delivered">active</span></td>
+                            <td>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Smartphones</td>
+                            <td>27</td>
+                            <td><span class="status-badge pending">coming soon</span></td>
+                            <td>
+                                <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Page Content -->
+        <div id="orders-page" style="display: none;">
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem;">
+                <h2 style="color:#ffbebe"><i class="fas fa-shopping-cart"></i> Orders</h2>
+                <select style="background:#1f0f0f; color:white; border:1px solid red; border-radius:30px; padding:0.5rem 1rem;">
+                    <option>All status</option><option>Pending</option><option>Shipped</option><option>Delivered</option>
+                </select>
+            </div>
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Date</th><th>Price</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>#EL1001</td><td>Mia Chen</td><td>Nova Buds</td><td>2025-03-04</td><td>$129</td><td><span class="status-badge shipped">Shipped</span></td></tr>
+                        <tr><td>#EL1002</td><td>Jay S.</td><td>Phantom X1</td><td>2025-03-03</td><td>$1,899</td><td><span class="status-badge pending">Pending</span></td></tr>
+                        <tr><td>#EL1003</td><td>Elena V.</td><td>Cyber watch</td><td>2025-03-02</td><td>$349</td><td><span class="status-badge delivered">Delivered</span></td></tr>
+                        <tr><td>#EL1004</td><td>Omar F.</td><td>Nova 4K</td><td>2025-03-02</td><td>$529</td><td><span class="status-badge delivered">Delivered</span></td></tr>
+                        <tr><td>#EL1005</td><td>Zara K.</td><td>Gaming mouse</td><td>2025-03-01</td><td>$79</td><td><span class="status-badge pending">Pending</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Page Content -->
+        <div id="customers-page" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="color:#ffbebe"><i class="fas fa-users"></i> Customers</h2>
+                <input type="text" class="search-bar" placeholder="🔍 Find customer...">
+            </div>
+            <div class="card">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                        <tr><th>Avatar</th><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Spent</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                        <tr><td><i class="fas fa-user-circle" style="font-size:2rem; color:#ff8888"></i></td><td>Alex Rivera</td><td>a.rivera@mail.com</td><td>+1 234 567</td><td>12</td><td>$4,280</td><td><button class="btn-icon">profile</button></td></tr>
+                        <tr><td><i class="fas fa-user-circle" style="font-size:2rem; color:#ff8888"></i></td><td>Blair Yu</td><td>blair.y@cyber.me</td><td>+1 987 654</td><td>8</td><td>$2,930</td><td><button class="btn-icon">profile</button></td></tr>
+                        <tr><td><i class="fas fa-user-circle" style="font-size:2rem; color:#ff8888"></i></td><td>Carlos M.</td><td>c.mendez@neo.com</td><td>+44 123 456</td><td>23</td><td>$8,124</td><td><button class="btn-icon">profile</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Page Content -->
+        <div id="analytics-page" style="display: none;">
+            <h2 style="color:#ffbebe; margin-bottom: 1.5rem;"><i class="fas fa-chart-line"></i> Analytics</h2>
+            <div class="stats-grid" style="grid-template-columns: repeat(4,1fr);">
+                <div class="card"><span>Visitors</span><div class="stat-value">23.4k</div></div>
+                <div class="card"><span>Conversion</span><div class="stat-value">4.6%</div></div>
+                <div class="card"><span>Avg. order</span><div class="stat-value">$218</div></div>
+                <div class="card"><span>Traffic</span><div class="stat-value">+22%</div></div>
+            </div>
+            <div class="chart-row">
+                <div class="chart-box">
+                    <div style="color:#ff8888; margin-bottom: 10px;">Revenue Trend</div>
+                    <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 150px;">
+                        <div style="width: 30px; background: #ff4d4d; height: 60px;"></div>
+                        <div style="width: 30px; background: #ff4d4d; height: 90px;"></div>
+                        <div style="width: 30px; background: #ff4d4d; height: 104px;"></div>
+                        <div style="width: 30px; background: #ff4d4d; height: 96px;"></div>
+                        <div style="width: 30px; background: #ff4d4d; height: 140px;"></div>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <div style="color:#ff8888; margin-bottom: 10px;">Sales by Category</div>
+                    <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 150px;">
+                        <div style="width: 40px; background: #ff4d4d; height: 90px;"></div>
+                        <div style="width: 40px; background: #ff6666; height: 44px;"></div>
+                        <div style="width: 40px; background: #ff9999; height: 76px;"></div>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <div style="color:#ff8888; margin-bottom: 10px;">Traffic Sources</div>
+                    <div style="display: flex; align-items: center; justify-content: center; height: 150px; gap: 10px;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: #ff3333;"></div>
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: #ff6666;"></div>
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: #ff9999;"></div>
+                        <div style="width: 30px; height: 30px; border-radius: 50%; background: #ffcccc;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page Content -->
+        <div id="settings-page" style="display: none;">
+            <h2 style="color:#ffbebe"><i class="fas fa-cog"></i> Settings</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem; margin-top:2rem;">
+                <div class="card">
+                    <h4>👤 Profile info</h4>
+                    <input class="search-bar" style="width:100%; margin:12px 0;" placeholder="Display name" value="Electro Admin">
+                    <input class="search-bar" style="width:100%;" placeholder="Email" value="admin@electro.tech">
+                </div>
+                <div class="card">
+                    <h4>🔒 Change password</h4>
+                    <input class="search-bar" style="width:100%; margin:6px 0;" type="password" placeholder="Current">
+                    <input class="search-bar" style="width:100%;" type="password" placeholder="New">
+                </div>
+            </div>
+            <div class="card" style="margin-top:2rem;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin:12px 0;"><span>🔔 Notifications</span> <input type="checkbox" class="toggle-switch" checked></div>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin:12px 0;"><span>🌙 Dark mode (red/black)</span> <input type="checkbox" class="toggle-switch" checked></div>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin:12px 0;"><span>📧 Email reports</span> <input type="checkbox" class="toggle-switch"></div>
+                <button class="btn-primary" style="margin-top: 1.5rem;">Save settings</button>
+            </div>
+        </div>
     </main>
 </div>
 
-<!-- page templates (hidden, used by JS) -->
-<template id="page-overview"><!-- injected via js --></template>
-<script src="assets/js/dashboard.js"></script>
+<!-- Image Preview Functions -->
+<script>
+    function previewImage(input, previewId, placeholderId, removeBtnId) {
+        const preview = document.getElementById(previewId);
+        const placeholder = document.getElementById(placeholderId);
+        const removeBtn = document.getElementById(removeBtnId);
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+                removeBtn.style.display = 'flex';
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removeImage(inputId, previewId, placeholderId, removeBtnId) {
+        const input = document.getElementById(inputId);
+        const preview = document.getElementById(previewId);
+        const placeholder = document.getElementById(placeholderId);
+        const removeBtn = document.getElementById(removeBtnId);
+
+        input.value = '';
+        preview.src = '#';
+        preview.style.display = 'none';
+        placeholder.style.display = 'block';
+        removeBtn.style.display = 'none';
+    }
+
+    function resetForm() {
+        document.getElementById('productForm').reset();
+        // Reset all image previews
+        removeImage('img1', 'preview1', 'placeholder1', 'removeBtn1');
+        removeImage('img2', 'preview2', 'placeholder2', 'removeBtn2');
+        removeImage('img3', 'preview3', 'placeholder3', 'removeBtn3');
+
+        // Reset selects to default
+        document.getElementById('color').innerHTML = '<option value="0">Select a Color</option>';
+        document.getElementById('storage').innerHTML = '<option value="0">Select a Storage</option>';
+
+        // Switch back to product list tab
+        document.querySelector('[data-product-tab="list"]').click();
+    }
+</script>
+
+<!-- Navigation Script -->
+<script>
+    // Main navigation between pages
+    document.querySelectorAll('.sidebar-nav li').forEach(item => {
+        item.addEventListener('click', function(e) {
+            // Remove active class from all items
+            document.querySelectorAll('.sidebar-nav li').forEach(li => li.classList.remove('active'));
+            this.classList.add('active');
+
+            // Get the page name
+            const pageName = this.querySelector('span').textContent.trim().toLowerCase();
+
+            // Hide all main pages
+            document.getElementById('overview-page').style.display = 'none';
+            document.getElementById('products-page').style.display = 'none';
+            document.getElementById('orders-page').style.display = 'none';
+            document.getElementById('customers-page').style.display = 'none';
+            document.getElementById('analytics-page').style.display = 'none';
+            document.getElementById('settings-page').style.display = 'none';
+
+            // Show selected page
+            if (pageName === 'overview') {
+                document.getElementById('overview-page').style.display = 'block';
+            } else if (pageName === 'products') {
+                document.getElementById('products-page').style.display = 'block';
+            } else if (pageName === 'orders') {
+                document.getElementById('orders-page').style.display = 'block';
+            } else if (pageName === 'customers') {
+                document.getElementById('customers-page').style.display = 'block';
+            } else if (pageName === 'analytics') {
+                document.getElementById('analytics-page').style.display = 'block';
+            } else if (pageName === 'settings') {
+                document.getElementById('settings-page').style.display = 'block';
+            }
+        });
+    });
+
+    // Products page tabs
+    const productTabs = document.querySelectorAll('[data-product-tab]');
+    if (productTabs.length) {
+        productTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all product tabs
+                productTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const tabName = this.getAttribute('data-product-tab');
+
+                // Hide all product tabs
+                document.getElementById('product-list-tab').style.display = 'none';
+                document.getElementById('add-product-tab').style.display = 'none';
+                document.getElementById('categories-tab').style.display = 'none';
+
+                // Show selected tab
+                if (tabName === 'list') {
+                    document.getElementById('product-list-tab').style.display = 'block';
+                } else if (tabName === 'add') {
+                    document.getElementById('add-product-tab').style.display = 'block';
+                    // Load color and storage options when Add Product tab is opened
+                    if (typeof loadColorStorage === 'function') {
+                        loadColorStorage();
+                    }
+                } else if (tabName === 'categories') {
+                    document.getElementById('categories-tab').style.display = 'block';
+                }
+            });
+        });
+    }
+</script>
+
+<!-- Include your JavaScript files -->
+<script src="assets/js/AddProduct.js"></script>
+<script src="assets/js/notiflix-aio-3.2.8.min.js"></script>
 </body>
 </html>
