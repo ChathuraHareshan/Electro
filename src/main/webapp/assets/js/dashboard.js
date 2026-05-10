@@ -292,3 +292,5 @@ window.addEventListener('load', () => {
     document.querySelectorAll('.sidebar-nav li').forEach(li => li.classList.remove('active'));
     document.querySelector('.sidebar-nav li[data-page="overview"]').classList.add('active');
 });
+
+

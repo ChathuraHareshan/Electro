@@ -73,10 +73,7 @@ public class ProductService {
             HttpSession httpSession = request.getSession(false);
             if (httpSession == null) {
                 message = "Session expired! Please logged in";
-            } else if (httpSession.getAttribute("user") == null) {
-                message = "Please logged in";
             } else {
-                User sessionUser = (User) httpSession.getAttribute("user");
                 Session hibernateSession = HibernateUtil.getSessionFactory().openSession();
 
                 Category category = hibernateSession.find(Category.class, productDTO.getCategoryId());

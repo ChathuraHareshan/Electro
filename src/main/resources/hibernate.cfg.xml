@@ -34,6 +34,7 @@
     <mapping class="com.electro.entity.User"/>
     <mapping class="com.electro.entity.Status"/>
     <mapping class="com.electro.entity.Stock"/>
+    <mapping class="com.electro.entity.Admin"/>
 
 
   </session-factory>

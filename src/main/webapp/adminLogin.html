@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Admin Login | Secure Access</title>
+  <!-- Simple modern reset & base styles -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(145deg, #e9f0fc 0%, #d9e4f5 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* main card container */
+    .login-container {
+      max-width: 460px;
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 2rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    /* header area with subtle admin badge */
+    .login-header {
+      background: #1e2a3e;
+      padding: 1.8rem 2rem 1.5rem 2rem;
+      text-align: center;
+      color: white;
+    }
+
+    .login-header h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      margin-bottom: 0.3rem;
+    }
+
+    .admin-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(2px);
+      padding: 0.25rem 1rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+    }
+
+    /* main form area */
+    .login-form {
+      padding: 2rem 2rem 2.2rem 2rem;
+    }
+
+    /* input group styling */
+    .input-group {
+      margin-bottom: 1.8rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    /* icon & field styling (purely visual) */
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      font-size: 1.2rem;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.9rem 1rem 0.9rem 2.8rem;
+      font-size: 1rem;
+      font-family: inherit;
+      background-color: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1.2rem;
+      transition: all 0.2s;
+      outline: none;
+      color: #0f172a;
+    }
+
+    input:focus {
+      border-color: #3b82f6;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    input::placeholder {
+      color: #cbd5e1;
+      font-weight: 400;
+    }
+
+    /* special optional note for OTP hint */
+    .otp-hint {
+      font-size: 0.7rem;
+      color: #5b6e8c;
+      margin-top: 0.4rem;
+      margin-left: 0.5rem;
+    }
+
+    /* login button - pure UI, no JS */
+    .login-btn {
+      width: 100%;
+      background: #1e293b;
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 0.9rem 1rem;
+      border: none;
+      border-radius: 1.5rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.2s;
+      margin-top: 0.5rem;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .login-btn:hover {
+      background: #0f172a;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* demo helper note (purely UI note, no logic) */
+    .info-note {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      color: #6c7a91;
+      border-top: 1px solid #edf2f7;
+      padding-top: 1.2rem;
+    }
+
+    .info-note span {
+      font-weight: 500;
+      background: #f1f5f9;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+    }
+
+    /* simple responsive touch */
+    @media (max-width: 480px) {
+      .login-form {
+        padding: 1.5rem;
+      }
+      .login-header {
+        padding: 1.4rem 1rem;
+      }
+      .login-header h1 {
+        font-size: 1.6rem;
+      }
+    }
+
+    .otpBtn {
+      width: 40%;
+      background: #104a8c;
+      color: white;
+      font-size: 1rem;
+      font-weight: 400;
+      padding: 0.3rem 0.4rem;
+      border: none;
+      border-radius: 1.5rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: 0.2s;
+      margin-top: 0.5rem;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-header">
+    <h1>Admin Portal</h1>
+    <div class="admin-badge">🔐 Secure Access</div>
+  </div>
+
+  <div class="login-form">
+    <!-- email field with icon -->
+    <div class="input-group">
+      <label for="email">Email address</label>
+      <div class="input-wrapper">
+        <span class="input-icon">📧</span>
+        <input type="email" id="email" name="email" placeholder="admin@example.com" autocomplete="email">
+      </div>
+      <button class="otpBtn" type="button" onclick="sendOTP();">Send OTP</button>
+
+    </div>
+
+
+
+    <!-- OTP field with icon & hint -->
+    <div class="input-group">
+      <label for="otp">One-Time Password (OTP)</label>
+      <div class="input-wrapper">
+        <span class="input-icon">🔢</span>
+        <input type="text" id="otp" name="otp" placeholder="6-digit code" autocomplete="off" inputmode="numeric">
+      </div>
+      <div class="otp-hint">⚡ Enter the 6-digit code sent to your email</div>
+    </div>
+
+    <!-- Login Button (no JS attached) -->
+    <button class="login-btn" type="button" onclick="verifyOTP();">Log in to Admin Console</button>
+
+    <!-- decorative note – purely UI info, no scripting -->
+    <div class="info-note">
+      <span>Demo UI</span> • Email + OTP verification
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/notiflix-aio-3.2.8.min.js"></script>
+<script src="assets/js/adminLogin.js"></script>
+
+</body>
+</html>
